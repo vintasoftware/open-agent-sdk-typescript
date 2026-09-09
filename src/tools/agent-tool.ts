@@ -120,6 +120,9 @@ export const AgentTool: ToolDefinition = {
       systemPrompt,
       maxTurns: agentDef?.maxTurns || 10,
       maxTokens: 16384,
+      // The SDK's default, like the ceiling above: a subagent inherits the parent's provider, not
+      // its `autoCompact`, since `ToolContext` does not carry it.
+      autoCompact: true,
       canUseTool: async () => ({ behavior: 'allow' }),
       includePartialMessages: false,
     })

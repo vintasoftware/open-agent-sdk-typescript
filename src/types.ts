@@ -397,6 +397,16 @@ export interface AgentOptions {
   agents?: Record<string, AgentDefinition>
   /** Maximum tokens for responses */
   maxTokens?: number
+  /**
+   * Whether the engine may compact the conversation on its own. Default: true.
+   *
+   * Off, neither the threshold check before a turn nor the retry after a
+   * `prompt too long` runs, so the history is sent as the host gave it. Hosts
+   * whose endpoint owns the conversation want that: a summarizer call of ours
+   * would land in their record as an ordinary turn, and a history we rewrote
+   * would disagree with the one they keep.
+   */
+  autoCompact?: boolean
   /** Effort level for reasoning */
   effort?: 'low' | 'medium' | 'high' | 'max'
   /** Fallback model if primary is unavailable */
@@ -483,6 +493,8 @@ export interface QueryEngineConfig {
   maxTurns: number
   maxBudgetUsd?: number
   maxTokens: number
+  /** Whether the engine may compact on its own. */
+  autoCompact: boolean
   thinking?: ThinkingConfig
   jsonSchema?: Record<string, unknown>
   canUseTool: CanUseToolFn

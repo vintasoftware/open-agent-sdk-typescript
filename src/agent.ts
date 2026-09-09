@@ -307,6 +307,7 @@ export class Agent {
       maxTurns: opts.maxTurns ?? 10,
       maxBudgetUsd: opts.maxBudgetUsd,
       maxTokens: opts.maxTokens ?? 16384,
+      autoCompact: opts.autoCompact ?? true,
       thinking: opts.thinking,
       jsonSchema: opts.jsonSchema,
       canUseTool,

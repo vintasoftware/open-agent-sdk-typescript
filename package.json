@@ -29,6 +29,7 @@
     }
   },
   "scripts": {
+    "prepare": "tsc",
     "build": "tsc",
     "dev": "tsc --watch",
     "test": "npx tsx examples/01-simple-query.ts",

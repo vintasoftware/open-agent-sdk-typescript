@@ -244,8 +244,13 @@ export class QueryEngine {
         break
       }
 
-      // Auto-compact if context is too large
-      if (shouldAutoCompact(this.messages as any[], this.config.model, this.compactState)) {
+      // Auto-compact if context is too large. Skipped whole when the host owns the
+      // conversation: the summarizer call is a turn of theirs and the rewrite is a history
+      // they never asked for.
+      if (
+        this.config.autoCompact &&
+        shouldAutoCompact(this.messages as any[], this.config.model, this.compactState)
+      ) {
         await this.executeHooks('PreCompact')
         try {
           const result = await compactConversation(
@@ -297,7 +302,11 @@ export class QueryEngine {
         )
       } catch (err: any) {
         // Handle prompt-too-long by compacting
-        if (isPromptTooLongError(err) && !this.compactState.compacted) {
+        if (
+          this.config.autoCompact &&
+          isPromptTooLongError(err) &&
+          !this.compactState.compacted
+        ) {
           try {
             const result = await compactConversation(
               this.provider,
